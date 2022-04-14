@@ -1,0 +1,12 @@
+name: "Auto release"
+description: "Auto release"
+inputs:
+  tag:
+    description: "指定 tag，否则读取 package.version"
+    required: false
+outputs:
+  changelog:
+    description: "日志"
+runs:
+  using: "node16"
+  main: "dist/index.js"
