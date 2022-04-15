@@ -8394,8 +8394,13 @@ const Renderer = {
     },
     renderCate: (cate) => {
         return `${cate.sort().map(pr => {
+<<<<<<< HEAD
             const title = pr.changelog ? `\`${pr.changelog.component}\`: ${pr.changelog.desc}` : pr.title
             return title + ` [@${pr.user.login}](https://github.com/${pr.user.login}) ((#${pr.number})[${pr.html_url}])`
+=======
+            const title = pr.changlog ? `\`${pr.changlog.component}\`: ${pr.changlog.desc}` : pr.title
+            return title + ` [@${pr.user.login}](https://github.com/${pr.user.login}) ([#${pr.number}](${pr.html_url}))`
+>>>>>>> develop
         }).join('\n')}`
     },
     renderMarkdown: (pullRequestList) => {
@@ -8668,7 +8673,7 @@ const pkg = __nccwpck_require__(4147);
 const context = github.context;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN
 
-console.log('context.github', context.github)
+console.log('context.github', context)
 
 // console.log('payload', context.payload);
 
@@ -8714,7 +8719,7 @@ const octokit = new Octokit({ auth: GITHUB_TOKEN });
 async function generatorLogStart() {
     const version = pkg.version;
 
-    const [owner, repo] = context.repository.full_name.split('/');
+    const [owner, repo] = context.payload.repository.full_name.split('/');
 
     console.log('owner, repo', owner, repo)
 
