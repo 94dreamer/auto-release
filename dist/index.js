@@ -8395,7 +8395,7 @@ const Renderer = {
     renderCate: (cate) => {
         return `${cate.sort().map(pr => {
             const title = pr.changlog ? `\`${pr.changlog.component}\`: ${pr.changlog.desc}` : pr.title
-            return title + ` [@${pr.user.login}](https://github.com/${pr.user.login}) ((#${pr.number})[${pr.html_url}])`
+            return title + ` [@${pr.user.login}](https://github.com/${pr.user.login}) ([#${pr.number}](${pr.html_url}))`
         }).join('\n')}`
     },
     renderMarkdown: (pullRequestList) => {
