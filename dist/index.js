@@ -8613,7 +8613,7 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"name":"auto-release","version":"1.0.0","description":"自动生成 pr 日志","main":"index.js","scripts":{"build":"npx ncc build index.js -o dist","test":"echo \\"Error: no test specified\\" && exit 1"},"author":"94dreamer","license":"ISC","dependencies":{"@actions/core":"^1.6.0","@actions/github":"^5.0.1","@octokit/rest":"^18.12.0","@vercel/ncc":"^0.33.4","dayjs":"^1.11.0","node-fetch":"^3.2.3"}}');
+module.exports = JSON.parse('{"name":"auto-release","version":"1.0.0","description":"自动生成 pr 日志","main":"index.js","scripts":{"build":"ncc build index.js -o dist","test":"echo \\"Error: no test specified\\" && exit 1"},"author":"94dreamer","license":"MIT","dependencies":{"@actions/core":"^1.6.0","@actions/github":"^5.0.1","@octokit/rest":"^18.12.0","@vercel/ncc":"^0.33.4","dayjs":"^1.11.0","node-fetch":"^3.2.3"},"devDependencies":{},"repository":{"type":"git","url":"git+https://github.com/94dreamer/auto-release.git"},"bugs":{"url":"https://github.com/94dreamer/auto-release/issues"},"homepage":"https://github.com/94dreamer/auto-release#readme"}');
 
 /***/ })
 
@@ -8666,8 +8666,13 @@ const Renderer = __nccwpck_require__(2059);
 const fs = __nccwpck_require__(7147);
 const pkg = __nccwpck_require__(4147);
 const context = github.context;
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN
 
-console.log(pkg);
+console.log('context.github?.event', context.github?.event)
+
+console.log('payload', context.payload);
+
+console.log('pkg?.version', pkg?.version);
 
 if (!GITHUB_TOKEN) {
     throw new Error(
