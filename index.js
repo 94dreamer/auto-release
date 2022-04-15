@@ -6,8 +6,11 @@ const Renderer = require('./renderer');
 const fs = require('fs');
 const pkg = require(`./package.json`);
 const context = github.context;
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN
 
-console.log(pkg);
+console.log('context.github?.event', context.github?.event)
+
+console.log('pkg?.version', pkg?.version);
 
 if (!GITHUB_TOKEN) {
     throw new Error(
