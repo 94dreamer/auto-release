@@ -10,6 +10,8 @@ const GITHUB_TOKEN = process.env.GITHUB_TOKEN
 
 console.log('context.github?.event', context.github?.event)
 
+console.log('payload', context.payload);
+
 console.log('pkg?.version', pkg?.version);
 
 if (!GITHUB_TOKEN) {
