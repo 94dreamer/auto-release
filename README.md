@@ -20,7 +20,7 @@ jobs:
     steps:
       - run: echo "The head of this PR starts with 'release/'"
       - uses: actions/checkout@v3
-      - uses: 94dreamer/auto-release
+      - uses: 94dreamer/auto-release@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
