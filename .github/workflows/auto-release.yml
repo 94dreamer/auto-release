@@ -15,12 +15,13 @@ jobs:
       - run: echo "The head of this PR starts with 'release/'"
       - run: echo ${{ github.event }}
       - uses: actions/checkout@v3
-      - uses: 94dreamer/auto-release
+      - uses: 94dreamer/auto-release@develop
         id: changlog
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: echo ${{github.event.pull_request.number}} ${{github.event.issue.number}}
       - name: Add comment
         uses: peter-evans/create-or-update-comment@v1
         with:
-          issue-number: ${{ github.event.issue.number }}
+          issue-number: ${{ github.event.pull_request.number }}
           body: ${{ steps.changlog.outputs.changlog }}
