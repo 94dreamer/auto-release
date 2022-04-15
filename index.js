@@ -8,9 +8,9 @@ const pkg = require(`./package.json`);
 const context = github.context;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN
 
-console.log('context.github?.event', context.github?.event)
+console.log('context.github', context.github)
 
-console.log('payload', context.payload);
+// console.log('payload', context.payload);
 
 console.log('pkg?.version', pkg?.version);
 
@@ -34,7 +34,6 @@ const octokit = new Octokit({ auth: GITHUB_TOKEN });
 # 8. git tag push 监听，发包
 # 9. 监听发完包，release 这次的 changlog（从 md 或者 pr 文件取）
 # 10. 同步到微信群。（mk 内网不能同步）
- */
 // 现有的开源工具都是根据 commit 的message 去pr查找。。。显得有点蠢
 
 // 比较两个commit的提交
@@ -50,18 +49,17 @@ const octokit = new Octokit({ auth: GITHUB_TOKEN });
 
 // 行不通：调用 github 的 自动生成接口 这里可能存在鉴权问题，因为不是 直接的 api 接口
 // https://github.com/94dreamer/tdesign-vue-next/releases/notes?commitish=0.11.2&tag_name=0.11.2&previous_tag_name=
+ */
 
 async function generatorLogStart() {
     const version = pkg.version;
-    console.log('...context.repo', ...context.repo)
-    if (!context.repo.owner || !context.repo.repo) {
-        throw new Error(
-            "context.repo 应该有 owner和repo"
-        )
-    }
+
+    const [owner, repo] = context.repository.full_name.split('/');
+
+    console.log('owner, repo', owner, repo)
 
     const releases = await octokit.rest.repos.generateReleaseNotes({
-        ...context.repo,
+        owner, repo,
         tag_name: version,// 'package.version'
         target_commitish: 'develop', // 也可以从上下文中拿
     });
@@ -69,7 +67,7 @@ async function generatorLogStart() {
     const PRNumbers = Renderer.getPRformtNotes(releases.data.body);
 
     const PRListRes = await Promise.all(PRNumbers.map(pull_number => octokit.rest.pulls.get({
-        ...context.repo,
+        owner, repo,
         pull_number,
     })));
 
