@@ -19,7 +19,6 @@ jobs:
         id: changelog
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: echo ${{ steps.changelog.outputs.changelog }}
       - name: Add comment
         uses: peter-evans/create-or-update-comment@v1
         with:
