@@ -31,14 +31,14 @@ jobs:
             ${{ steps.changelog.outputs.changelog }}
   comment_add_log:
     runs-on: ubuntu-latest
-    # if: >
-    #   github.event_name == 'issue_comment' &&
-    #   github.event.issue.pull_request &&
-    #   github.event.issue.pull_request.base.ref == 'develop' &&
+    if: >
+      github.event_name == 'issue_comment' &&
+      github.event.issue.pull_request
+    #    && github.event.issue.pull_request.base.ref == 'develop' &&
     #   startsWith(github.event.issue.pull_request.head.ref, 'release/')
     steps:
       - run: echo ${{ github.event_name }}
-      - run: echo ${{ github.event.issue.pull_request }} > pr.txt
+      - run: echo ${{ github.event.issue.pull_request }} > ./pr.txt
       - run: echo ${{ github.event.issue.pull_request.base }}
       - run: echo ${{ github.event.issue.pull_request.base.ref }}
       - run: echo ${{ github.event.issue.pull_request.head }}
@@ -46,6 +46,11 @@ jobs:
       - run: echo pr_add_log $NUMBER
       - run: echo ${{ github.event.comment.body }}
       - run: cat pr.txt
+      - name: Upload PR
+        uses: actions/upload-artifact@v2
+        with:
+          name: pr
+          path: ./pr.txt
   merge_tag:
     runs-on: ubuntu-latest
     if: >
