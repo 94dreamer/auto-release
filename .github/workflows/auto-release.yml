@@ -16,13 +16,13 @@ jobs:
       - run: echo ${{ github.event }}
       - uses: actions/checkout@v3
       - uses: 94dreamer/auto-release@develop
-        id: changlog
+        id: changelog
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: echo ${{ steps.changlog.outputs.changlog }}
+      - run: echo ${{ steps.changelog.outputs.changelog }}
       - name: Add comment
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
-            ${{ steps.changlog.outputs.changlog }}
+            ${{ steps.changelog.outputs.changelog }}

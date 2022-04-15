@@ -8372,7 +8372,7 @@ function wrappy (fn, cb) {
 /***/ 2059:
 /***/ ((module) => {
 
-const skipChanglogLabel = ['skip-changelog'];
+const skipchangelogLabel = ['skip-changelog'];
 const fixLabel = ['fix', 'bug', 'hotfix']
 const breakingLabel = ['breaking', 'breaking changes']
 const featureLabel = ['feature', 'feat', 'enhancement']
@@ -8394,7 +8394,7 @@ const Renderer = {
     },
     renderCate: (cate) => {
         return `${cate.sort().map(pr => {
-            const title = pr.changlog ? `\`${pr.changlog.component}\`: ${pr.changlog.desc}` : pr.title
+            const title = pr.changelog ? `\`${pr.changelog.component}\`: ${pr.changelog.desc}` : pr.title
             return title + ` [@${pr.user.login}](https://github.com/${pr.user.login}) ((#${pr.number})[${pr.html_url}])`
         }).join('\n')}`
     },
@@ -8411,14 +8411,14 @@ const Renderer = {
         pullRequestList.forEach(pr => {
             pr.body = pr.body ? pr.body : '';
 
-            // 不需要纳入 Changelog 的 label
-            if (pr.labels.find(l => skipChanglogLabel.indexOf(l.name) !== -1)) {
-                console.log('pr ' + pr.number + ' 有skipChanglogLabel')
+            // 不需要纳入 changelog 的 label
+            if (pr.labels.find(l => skipchangelogLabel.indexOf(l.name) !== -1)) {
+                console.log('pr ' + pr.number + ' 有skipchangelogLabel')
                 return
             }
             // 在 pr body 明确填了 跳过 label
-            if (pr.body.indexOf('[x] 本条 PR 不需要纳入 Changelog') !== -1) {
-                console.log('pr ', pr.number, ' 显示不需要纳入 Changelog')
+            if (pr.body.indexOf('[x] 本条 PR 不需要纳入 changelog') !== -1) {
+                console.log('pr ', pr.number, ' 显示不需要纳入 changelog')
                 return
             }
 
@@ -8434,14 +8434,14 @@ const Renderer = {
                     return
                 }
 
-                arr.map(a => Renderer.regToPrObj(a)).forEach(changlog => {
+                arr.map(a => Renderer.regToPrObj(a)).forEach(changelog => {
                     const logItem = {
                         ...pr,
-                        changlog
+                        changelog
                     }
 
                     function isInLabel(label) {
-                        return label.indexOf(changlog.cate) !== -1 || (arr.length === 1 && pr.labels.some(l => label.indexOf(l.name) !== -1))
+                        return label.indexOf(changelog.cate) !== -1 || (arr.length === 1 && pr.labels.some(l => label.indexOf(l.name) !== -1))
                     }
 
                     if (isInLabel(breakingLabel)) {
@@ -8613,7 +8613,7 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"name":"auto-release","version":"1.0.0","description":"自动生成 pr 日志","main":"index.js","scripts":{"build":"ncc build index.js -o dist","test":"echo \\"Error: no test specified\\" && exit 1"},"author":"94dreamer","license":"MIT","dependencies":{"@actions/core":"^1.6.0","@actions/github":"^5.0.1","@octokit/rest":"^18.12.0","@vercel/ncc":"^0.33.4","dayjs":"^1.11.0","node-fetch":"^3.2.3"},"devDependencies":{},"repository":{"type":"git","url":"git+https://github.com/94dreamer/auto-release.git"},"bugs":{"url":"https://github.com/94dreamer/auto-release/issues"},"homepage":"https://github.com/94dreamer/auto-release#readme"}');
+module.exports = JSON.parse('{"name":"auto-release","version":"1.0.1","description":"自动生成 pr 日志","main":"index.js","scripts":{"build":"ncc build index.js -o dist","test":"echo \\"Error: no test specified\\" && exit 1"},"author":"94dreamer","license":"MIT","dependencies":{"@actions/core":"^1.6.0","@actions/github":"^5.0.1","@octokit/rest":"^18.12.0","@vercel/ncc":"^0.33.4","dayjs":"^1.11.0","node-fetch":"^3.2.3"},"devDependencies":{},"repository":{"type":"git","url":"git+https://github.com/94dreamer/auto-release.git"},"bugs":{"url":"https://github.com/94dreamer/auto-release/issues"},"homepage":"https://github.com/94dreamer/auto-release#readme"}');
 
 /***/ })
 
@@ -8687,12 +8687,12 @@ const octokit = new Octokit({ auth: GITHUB_TOKEN });
 # 2. 提取 pr list 的所有 body 的 更新日志
 # 3. 根据分类格式化 的 logs 输出到模版
 # 4. 输出评论到 pr 的 comment
-# 5. 检测到 评论的 done，提交 changlog 添加到 changlog.md。
+# 5. 检测到 评论的 done，提交 changelog 添加到 changelog.md。
 # 6. 确任 md 更改，合并。
 
 # 7. 监听 release 分支的合并，进行 git tag 对应version
 # 8. git tag push 监听，发包
-# 9. 监听发完包，release 这次的 changlog（从 md 或者 pr 文件取）
+# 9. 监听发完包，release 这次的 changelog（从 md 或者 pr 文件取）
 # 10. 同步到微信群。（mk 内网不能同步）
 // 现有的开源工具都是根据 commit 的message 去pr查找。。。显得有点蠢
 

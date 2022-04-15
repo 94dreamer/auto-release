@@ -1,4 +1,4 @@
-const skipChanglogLabel = ['skip-changelog'];
+const skipchangelogLabel = ['skip-changelog'];
 const fixLabel = ['fix', 'bug', 'hotfix']
 const breakingLabel = ['breaking', 'breaking changes']
 const featureLabel = ['feature', 'feat', 'enhancement']
@@ -20,7 +20,7 @@ const Renderer = {
     },
     renderCate: (cate) => {
         return `${cate.sort().map(pr => {
-            const title = pr.changlog ? `\`${pr.changlog.component}\`: ${pr.changlog.desc}` : pr.title
+            const title = pr.changelog ? `\`${pr.changelog.component}\`: ${pr.changelog.desc}` : pr.title
             return title + ` [@${pr.user.login}](https://github.com/${pr.user.login}) ((#${pr.number})[${pr.html_url}])`
         }).join('\n')}`
     },
@@ -37,14 +37,14 @@ const Renderer = {
         pullRequestList.forEach(pr => {
             pr.body = pr.body ? pr.body : '';
 
-            // 不需要纳入 Changelog 的 label
-            if (pr.labels.find(l => skipChanglogLabel.indexOf(l.name) !== -1)) {
-                console.log('pr ' + pr.number + ' 有skipChanglogLabel')
+            // 不需要纳入 changelog 的 label
+            if (pr.labels.find(l => skipchangelogLabel.indexOf(l.name) !== -1)) {
+                console.log('pr ' + pr.number + ' 有skipchangelogLabel')
                 return
             }
             // 在 pr body 明确填了 跳过 label
-            if (pr.body.indexOf('[x] 本条 PR 不需要纳入 Changelog') !== -1) {
-                console.log('pr ', pr.number, ' 显示不需要纳入 Changelog')
+            if (pr.body.indexOf('[x] 本条 PR 不需要纳入 changelog') !== -1) {
+                console.log('pr ', pr.number, ' 显示不需要纳入 changelog')
                 return
             }
 
@@ -60,14 +60,14 @@ const Renderer = {
                     return
                 }
 
-                arr.map(a => Renderer.regToPrObj(a)).forEach(changlog => {
+                arr.map(a => Renderer.regToPrObj(a)).forEach(changelog => {
                     const logItem = {
                         ...pr,
-                        changlog
+                        changelog
                     }
 
                     function isInLabel(label) {
-                        return label.indexOf(changlog.cate) !== -1 || (arr.length === 1 && pr.labels.some(l => label.indexOf(l.name) !== -1))
+                        return label.indexOf(changelog.cate) !== -1 || (arr.length === 1 && pr.labels.some(l => label.indexOf(l.name) !== -1))
                     }
 
                     if (isInLabel(breakingLabel)) {

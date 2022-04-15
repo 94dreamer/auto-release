@@ -27,12 +27,12 @@ const octokit = new Octokit({ auth: GITHUB_TOKEN });
 # 2. 提取 pr list 的所有 body 的 更新日志
 # 3. 根据分类格式化 的 logs 输出到模版
 # 4. 输出评论到 pr 的 comment
-# 5. 检测到 评论的 done，提交 changlog 添加到 changlog.md。
+# 5. 检测到 评论的 done，提交 changelog 添加到 changelog.md。
 # 6. 确任 md 更改，合并。
 
 # 7. 监听 release 分支的合并，进行 git tag 对应version
 # 8. git tag push 监听，发包
-# 9. 监听发完包，release 这次的 changlog（从 md 或者 pr 文件取）
+# 9. 监听发完包，release 这次的 changelog（从 md 或者 pr 文件取）
 # 10. 同步到微信群。（mk 内网不能同步）
 // 现有的开源工具都是根据 commit 的message 去pr查找。。。显得有点蠢
 
