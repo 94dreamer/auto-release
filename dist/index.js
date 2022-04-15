@@ -8668,7 +8668,7 @@ const pkg = __nccwpck_require__(4147);
 const context = github.context;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN
 
-console.log('context.github', context.github)
+console.log('context.github', context)
 
 // console.log('payload', context.payload);
 
@@ -8714,7 +8714,7 @@ const octokit = new Octokit({ auth: GITHUB_TOKEN });
 async function generatorLogStart() {
     const version = pkg.version;
 
-    const [owner, repo] = context.repository.full_name.split('/');
+    const [owner, repo] = context.payload.repository.full_name.split('/');
 
     console.log('owner, repo', owner, repo)
 
