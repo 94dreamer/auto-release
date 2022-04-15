@@ -19,9 +19,10 @@ jobs:
         id: changlog
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: echo ${{github.event.pull_request.number}} ${{github.event.issue.number}}
+      - run: echo ${{ steps.changlog.outputs.changlog }}
       - name: Add comment
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.pull_request.number }}
-          body: ${{ steps.changlog.outputs.changlog }}
+          body: |
+            ${{ steps.changlog.outputs.changlog }}
