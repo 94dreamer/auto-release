@@ -32,8 +32,8 @@ jobs:
   comment_add_log:
     runs-on: ubuntu-latest
     if: >
-      github.event_name == 'issue_comment' &&
-      github.event.issue.pull_request
+      github.event_name == 'issue_comment'
+    #    && github.event.issue.pull_request
     #    && github.event.issue.pull_request.base.ref == 'develop' &&
     #   startsWith(github.event.issue.pull_request.head.ref, 'release/')
     steps:
