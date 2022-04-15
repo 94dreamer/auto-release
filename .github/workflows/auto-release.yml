@@ -37,6 +37,9 @@ jobs:
       github.event.issue.pull_request.head.base == 'develop' &&
       startsWith(github.event.issue.pull_request.head.ref, 'release/')
     steps:
+      - run: echo ${{ github.event.issue.event_name }}
+      - run: echo ${{ github.event.issue.pull_request.head.base }}
+      - run: echo ${{ github.event.issue.pull_request.head.ref }}
       - run: echo pr_add_log $NUMBER
   merge_tag:
     runs-on: ubuntu-latest
