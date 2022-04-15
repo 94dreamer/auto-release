@@ -15,10 +15,9 @@ jobs:
     if: >
       github.event_name == 'pull_request' &&
       github.event.pull_request.merged == false &&
-      startsWith(github.head_ref, 'release/') &&
+      startsWith(github.head_ref, 'release/')
     steps:
       - run: echo "The head of this PR starts with 'release/'"
-      - run: echo ${{ github.event }}
       - uses: actions/checkout@v3
       - uses: 94dreamer/auto-release@develop
         id: changelog
@@ -35,7 +34,8 @@ jobs:
     if: >
       github.event.issue.event_name == 'issue_comment' &&
       github.event.issue.pull_request &&
-      startsWith(github.head_ref, 'release/') &&
+      github.event.issue.pull_request.head.base == 'develop' &&
+      startsWith(github.event.issue.pull_request.head.ref, 'release/')
     steps:
       - run: echo pr_add_log $NUMBER
   merge_tag:
@@ -45,4 +45,4 @@ jobs:
       github.event.pull_request.merged == false &&
       startsWith(github.head_ref, 'release/')
     steps:
-      - run: echo pr_merge_tag $NUMBER
+      - run: echo pr_merge_tag
