@@ -8394,13 +8394,8 @@ const Renderer = {
     },
     renderCate: (cate) => {
         return `${cate.sort().map(pr => {
-<<<<<<< HEAD
-            const title = pr.changelog ? `\`${pr.changelog.component}\`: ${pr.changelog.desc}` : pr.title
-            return title + ` [@${pr.user.login}](https://github.com/${pr.user.login}) ((#${pr.number})[${pr.html_url}])`
-=======
             const title = pr.changlog ? `\`${pr.changlog.component}\`: ${pr.changlog.desc}` : pr.title
             return title + ` [@${pr.user.login}](https://github.com/${pr.user.login}) ([#${pr.number}](${pr.html_url}))`
->>>>>>> develop
         }).join('\n')}`
     },
     renderMarkdown: (pullRequestList) => {
