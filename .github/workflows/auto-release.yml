@@ -3,14 +3,19 @@ name: Auto Release
 on:
   pull_request:
     branches: [develop]
-    types: [opened, synchronize, reopened]
+    types: [opened, synchronize, reopened, closed]
     paths:
       - "package.json"
+  issue_comment:
+    types: [created, edited]
 
 jobs:
   generator:
     runs-on: ubuntu-latest
-    if: startsWith(github.head_ref, 'release/')
+    if: >
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.merged == false &&
+      startsWith(github.head_ref, 'release/') &&
     steps:
       - run: echo "The head of this PR starts with 'release/'"
       - run: echo ${{ github.event }}
@@ -25,3 +30,19 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
             ${{ steps.changelog.outputs.changelog }}
+  comment_add_log:
+    runs-on: ubuntu-latest
+    if: >
+      github.event.issue.event_name == 'issue_comment' &&
+      github.event.issue.pull_request &&
+      startsWith(github.head_ref, 'release/') &&
+    steps:
+      - run: echo pr_add_log $NUMBER
+  merge_tag:
+    runs-on: ubuntu-latest
+    if: >
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.merged == false &&
+      startsWith(github.head_ref, 'release/')
+    steps:
+      - run: echo pr_merge_tag $NUMBER
