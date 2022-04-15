@@ -32,15 +32,20 @@ jobs:
   comment_add_log:
     runs-on: ubuntu-latest
     # if: >
-    #   github.event.issue.event_name == 'issue_comment' &&
+    #   github.event_name == 'issue_comment' &&
     #   github.event.issue.pull_request &&
-    #   github.event.issue.pull_request.head.base == 'develop' &&
+    #   github.event.issue.pull_request.base.ref == 'develop' &&
     #   startsWith(github.event.issue.pull_request.head.ref, 'release/')
     steps:
-      - run: echo ${{ github.event.issue.event_name }}
-      - run: echo ${{ github.event.issue.pull_request.head.base }}
+      - run: echo ${{ github.event_name }}
+      - run: echo ${{ github.event.issue.pull_request }} > pr.txt
+      - run: echo ${{ github.event.issue.pull_request.base }}
+      - run: echo ${{ github.event.issue.pull_request.base.ref }}
+      - run: echo ${{ github.event.issue.pull_request.head }}
       - run: echo ${{ github.event.issue.pull_request.head.ref }}
       - run: echo pr_add_log $NUMBER
+      - run: echo ${{ github.event.comment.body }}
+      - run: cat pr.txt
   merge_tag:
     runs-on: ubuntu-latest
     if: >
