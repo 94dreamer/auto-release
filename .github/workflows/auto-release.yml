@@ -38,18 +38,17 @@ jobs:
     #   startsWith(github.event.issue.pull_request.head.ref, 'release/')
     steps:
       - run: echo ${{ github.event_name }}
+      - run: echo ${{ toJSON(github) }}
       - run: echo ${{ toJSON(github.event.issue.pull_request) }}
-      - run: echo ${{ github.event.issue.pull_request.base }}
-      - run: echo ${{ github.event.issue.pull_request.base.ref }}
-      - run: echo ${{ github.event.issue.pull_request.head }}
-      - run: echo ${{ github.event.issue.pull_request.head.ref }}
-      - run: echo pr_add_log $NUMBER
+      - run: curl github.event.issue.pull_request.url
+      # 从 curl 的变量中读取 到 两个 ref 然后文本判断 todo
+      # - run: pull_request.base.ref == 'develop'' && head.ref indexof 'release/'
+      # - run: echo ${{ github.event.issue.pull_request.base }}
+      # - run: echo ${{ github.event.issue.pull_request.base.ref }}
+      # - run: echo ${{ github.event.issue.pull_request.head }}
+      # - run: echo ${{ github.event.issue.pull_request.head.ref }}
+      # - run: echo pr_add_log $NUMBER
       - run: echo ${{ github.event.comment.body }}
-      # - name: Upload PR
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: pr
-      #     path: ./pr.txt
   merge_tag:
     runs-on: ubuntu-latest
     if: >
