@@ -34,20 +34,25 @@ jobs:
     if: >
       github.event_name == 'issue_comment'
       && github.event.issue.pull_request
+      && github.event.comment.user.login == github.event.issue.user.login
+      &&
     #    && github.event.issue.pull_request.base.ref == 'develop' &&
     #   startsWith(github.event.issue.pull_request.head.ref, 'release/')
     steps:
       - run: echo ${{ github.event_name }}
       - run: echo ${{ toJSON(github) }}
       - run: echo ${{ toJSON(github.event.issue.pull_request) }}
-      - run: curl github.event.issue.pull_request.url
-      # 从 curl 的变量中读取 到 两个 ref 然后文本判断 todo
-      # - run: pull_request.base.ref == 'develop'' && head.ref indexof 'release/'
-      # - run: echo ${{ github.event.issue.pull_request.base }}
-      # - run: echo ${{ github.event.issue.pull_request.base.ref }}
-      # - run: echo ${{ github.event.issue.pull_request.head }}
-      # - run: echo ${{ github.event.issue.pull_request.head.ref }}
-      # - run: echo pr_add_log $NUMBER
+      - run: |
+          result=$(curl ${{github.event.issue.pull_request.url}})
+          branch='"ref": "release/'
+          if [[ $result =~ $branch ]]
+          then
+            echo "包含"
+          else
+            echo "不包含" && exit 1
+          fi
+      - uses: actions/checkout@v3
+      - run: echo ${git log}
       - run: echo ${{ github.event.comment.body }}
   merge_tag:
     runs-on: ubuntu-latest
