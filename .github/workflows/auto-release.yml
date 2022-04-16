@@ -62,6 +62,8 @@ jobs:
           fi
 
           reMatch $result '"ref": "(release/.+)",'
+          echo $reMatch
+          echo ${reMatch}
           echo ${reMatch[2]}
           echo "::set-output name=branch::release"
       - run: echo ${{ steps.comment.outputs.branch }}
