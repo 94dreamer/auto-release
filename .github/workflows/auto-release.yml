@@ -38,15 +38,6 @@ jobs:
     steps:
       - id: comment
         run: |
-          result=$(curl ${{github.event.issue.pull_request.url}} -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}")
-          branch='"ref": "release/'
-          if [[ $result =~ $branch ]]
-          then
-            echo "属于 release pr 的 comment"
-          else
-            echo "不属于 release pr 的 comment" && exit 1
-          fi
-
           function reMatch {
             typeset ec
             unset -v reMatch
@@ -59,10 +50,18 @@ jobs:
             fi
             return $ec
           }
-          reMatch '"ref": "release/1.0.1",' '"ref": "(release/.+)",'
-          echo ${reMatch[2]}
-          echo "::set-output name=branch::$reMatch[2]"
-
+          result=$(curl ${{github.event.issue.pull_request.url}} -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}")
+          branch='"ref": "release/'
+          if [[ $result =~ $branch ]]
+          then
+            echo "属于 release pr 的 comment"
+            reMatch $result '"ref": "(release/.+)",'
+            echo ${reMatch[2]}
+            echo "::set-output name=branch::${reMatch[2]}"
+          else
+            echo "不属于 release pr 的 comment" && exit 1
+          fi
+      - run: echo ${{ steps.comment.outputs.branch }}
       - uses: actions/checkout@v3
         with:
           ref: ${{ steps.comment.outputs.branch }}
