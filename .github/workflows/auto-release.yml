@@ -36,20 +36,40 @@ jobs:
       && github.event.issue.pull_request
       && github.event.comment.user.login == github.event.issue.user.login
     steps:
-      - run: |
+      - id: comment
+        run: |
           result=$(curl ${{github.event.issue.pull_request.url}} -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}")
           branch='"ref": "release/'
           if [[ $result =~ $branch ]]
           then
             echo "属于 release pr 的 comment"
+            head.ref
           else
             echo "不属于 release pr 的 comment" && exit 1
           fi
+
+          function reMatch {
+            typeset ec
+            unset -v reMatch
+            [[ $1 =~ $2 ]]
+            ec=$? # save exit code
+            if [[ $ec -eq 0 ]]; then # copy result to output variable
+              [[ -n $BASH_VERSION ]] && reMatch=( "${BASH_REMATCH[@]}" )
+              [[ -n $KSH_VERSION ]]  && reMatch=( "${.sh.match[@]}" )
+              [[ -n $ZSH_VERSION ]]  && reMatch=( "$MATCH" "${match[@]}" )
+            fi
+            return $ec
+          }
+          reMatch '"ref": "release/1.0.1",' '"ref": "(release/.+)",'
+          echo ${reMatch[2]}
+          echo "::set-output name=branch::$reMatch[2]"
+
       - uses: actions/checkout@v3
         with:
-          ref: develop
+          ref: ${{ steps.comment.outputs.branch }}
       - run: echo $(git log)
       - run: echo ${{ github.event.comment.body }}
+
   merge_tag:
     runs-on: ubuntu-latest
     if: >
