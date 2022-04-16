@@ -37,15 +37,17 @@ jobs:
       && github.event.comment.user.login == github.event.issue.user.login
     steps:
       - run: |
-          result=$(curl ${{github.event.issue.pull_request.url}})
+          result=$(curl ${{github.event.issue.pull_request.url}} -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}")
           branch='"ref": "release/'
           if [[ $result =~ $branch ]]
           then
-            echo "包含"
+            echo "属于 release pr 的 comment"
           else
-            echo "不包含" && exit 1
+            echo "不属于 release pr 的 comment" && exit 1
           fi
       - uses: actions/checkout@v3
+        with:
+          ref: develop
       - run: echo $(git log)
       - run: echo ${{ github.event.comment.body }}
   merge_tag:
