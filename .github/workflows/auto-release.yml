@@ -50,17 +50,19 @@ jobs:
             fi
             return $ec
           }
+
           result=$(curl ${{github.event.issue.pull_request.url}} -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}")
           ref='"ref": "release/'
+
           if [[ $result =~ $ref ]]
           then
             echo "属于 release pr 的 comment"
-            reMatch $result '"ref": "(release/.+)",'
-            echo ${reMatch[2]}
           else
             echo "不属于 release pr 的 comment"
-            exit 1
           fi
+
+          reMatch $result '"ref": "(release/.+)",'
+          echo ${reMatch[2]}
           echo "::set-output name=branch::release"
       - run: echo ${{ steps.comment.outputs.branch }}
       - uses: actions/checkout@v3
