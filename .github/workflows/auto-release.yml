@@ -43,7 +43,6 @@ jobs:
           if [[ $result =~ $branch ]]
           then
             echo "属于 release pr 的 comment"
-            head.ref
           else
             echo "不属于 release pr 的 comment" && exit 1
           fi
