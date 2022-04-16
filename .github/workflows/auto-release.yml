@@ -46,7 +46,7 @@ jobs:
             echo "不包含" && exit 1
           fi
       - uses: actions/checkout@v3
-      - run: echo ${git log}
+      - run: echo $(git log)
       - run: echo ${{ github.event.comment.body }}
   merge_tag:
     runs-on: ubuntu-latest
