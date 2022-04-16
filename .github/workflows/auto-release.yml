@@ -51,8 +51,9 @@ jobs:
             return $ec
           }
           result=$(curl ${{github.event.issue.pull_request.url}} -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}")
-          branch='"ref": "release/'
-          if [[ $result =~ $branch ]]
+          ref='"ref": "release/'
+          echo $result
+          if [[ $result =~ $ref ]]
           then
             echo "属于 release pr 的 comment"
             reMatch $result '"ref": "(release/.+)",'
