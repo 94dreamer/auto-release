@@ -46,11 +46,11 @@ jobs:
             echo "属于 release pr 的 comment"
             
           else
-            echo "不属于 release pr 的 comment" && exit 1
+            echo "不属于 release pr 的 comment"
           fi
           [[ $result =~ '"ref": "(release/.+)",' ]]
-          echo ${BASH_REMATCH[1]} ${BASH_REMATCH[2]}
-          echo $BASH_REMATCH[1]
+        # echo ${BASH_REMATCH[1]} ${BASH_REMATCH[2]}
+        # echo $BASH_REMATCH[1]
         # echo "::set-output name=branch::$match[1]"
       - run: echo ${{ steps.comment.outputs.branch }}
       - uses: actions/checkout@v3
