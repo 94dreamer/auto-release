@@ -39,18 +39,6 @@ jobs:
       - id: comment
         shell: zsh
         run: |
-          function reMatch {
-            typeset ec
-            unset -v reMatch
-            [[ $1 =~ $2 ]]
-            ec=$? # save exit code
-            if [[ $ec -eq 0 ]]; then # copy result to output variable
-              [[ -n $BASH_VERSION ]] && reMatch=( "${BASH_REMATCH[@]}" )
-              [[ -n $KSH_VERSION ]]  && reMatch=( "${.sh.match[@]}" )
-              [[ -n $ZSH_VERSION ]]  && reMatch=( "$MATCH" "${match[@]}" )
-            fi
-            return $ec
-          }
           result=$(curl ${{github.event.issue.pull_request.url}} -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}")
           ref='"ref": "release/'
           if [[ $result =~ $ref ]]
@@ -60,6 +48,7 @@ jobs:
             echo "不属于 release pr 的 comment"
           fi
           [[ $result =~ '"ref": "(release/.+)",' ]]
+          echo $match[1]
           echo "::set-output name=branch::$match[1]"
       - run: echo ${{ steps.comment.outputs.branch }}
       - uses: actions/checkout@v3
