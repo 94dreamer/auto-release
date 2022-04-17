@@ -49,7 +49,7 @@ jobs:
           fi
           [[ $result =~ '"ref": "(release/.+)",' ]]
           echo $match[1]
-          echo "::set-output name=branch::$match[1]"
+      # echo "::set-output name=branch::$match[1]"
       - run: echo ${{ steps.comment.outputs.branch }}
       - uses: actions/checkout@v3
         with:
