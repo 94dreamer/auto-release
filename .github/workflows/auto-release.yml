@@ -60,9 +60,6 @@ jobs:
           else
             echo "不属于 release pr 的 comment"
           fi
-
-          reMatch $result '"ref": "(release/.+)",'
-          echo "::set-output name=branch::release"
       - run: echo ${{ steps.comment.outputs.branch }}
       - uses: actions/checkout@v3
         with:
