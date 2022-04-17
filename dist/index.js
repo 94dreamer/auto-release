@@ -8613,7 +8613,7 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"name":"auto-release","version":"1.0.0","description":"自动生成 pr 日志","main":"index.js","scripts":{"build":"npx ncc build index.js -o dist","test":"echo \\"Error: no test specified\\" && exit 1"},"author":"94dreamer","license":"ISC","dependencies":{"@actions/core":"^1.6.0","@actions/github":"^5.0.1","@octokit/rest":"^18.12.0","@vercel/ncc":"^0.33.4","dayjs":"^1.11.0","node-fetch":"^3.2.3"}}');
+module.exports = JSON.parse('{"name":"auto-release","version":"1.0.0","description":"自动生成 pr 日志","main":"index.js","scripts":{"build":"ncc build index.js -o dist","test":"echo \\"Error: no test specified\\" && exit 1"},"author":"94dreamer","license":"ISC","dependencies":{"@actions/core":"^1.6.0","@actions/github":"^5.0.1","@octokit/rest":"^18.12.0","@vercel/ncc":"^0.33.4","dayjs":"^1.11.0","node-fetch":"^3.2.3"}}');
 
 /***/ })
 
@@ -8732,7 +8732,8 @@ async function generatorLogStart() {
 
     console.log(PRList.map(n => n.number))
 
-    const logRelease = `## ${version} ${dayjs().format('YYYY-MM-DD')}` + Renderer.renderMarkdown(PRList)
+    const logRelease = `(删除此行代表确认该日志):修改并确认日志后删除这一行，机器人会提交到 本 PR 的 CHANGELOG.md 文件中
+## ${version} ${dayjs().format('YYYY-MM-DD')}` + Renderer.renderMarkdown(PRList)
 
     console.log(logRelease);
 
