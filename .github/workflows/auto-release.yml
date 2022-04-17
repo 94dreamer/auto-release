@@ -44,7 +44,7 @@ jobs:
           headrefreg='"ref": "(release/.+)",'
           if [[ $result =~ $headrefreg ]]
           then
-            echo "属于 release pr 的 comment ${BASH_REMATCH[1]}" 
+            echo "属于 release pr 的 comment ${BASH_REMATCH[2]}" 
           else
             echo "不属于 release pr 的 comment"
           fi
