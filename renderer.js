@@ -99,7 +99,7 @@ ${Renderer.renderCate(categories.features)}` : '',
 ${Renderer.renderCate(categories.bugfix)}` : '',
 
             categories.extra.length ? `### 🚧 Others
-${Renderer.renderCate(categories.extra)}` : ''].join('\n')
+${Renderer.renderCate(categories.extra)}` : ''].filter(n => n).join('\n')
     }
 }
 
