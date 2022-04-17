@@ -75,7 +75,7 @@ async function generatorLogStart() {
 
     console.log(PRList.map(n => n.number))
 
-    const logRelease = `(删除此行代表确认该日志):修改并确认日志后删除这一行，机器人会提交到 本 PR 的 CHANGELOG.md 文件中
+    const logRelease = `(删除此行代表确认该日志): 修改并确认日志后删除这一行，机器人会提交到 本 PR 的 CHANGELOG.md 文件中
 ### 🌈 ${version} ${dayjs().format('YYYY-MM-DD')} \n` + Renderer.renderMarkdown(PRList)
 
     console.log(logRelease);
