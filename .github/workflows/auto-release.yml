@@ -37,20 +37,21 @@ jobs:
       && github.event.comment.user.login == github.event.issue.user.login
     steps:
       - id: comment
-        shell: zsh
+        shell: bash
         run: |
-          echo '12313131'
-      # result=$(curl ${{github.event.issue.pull_request.url}} -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}")
-      # ref='"ref": "release/'
-      # if [[ $result =~ $ref ]]
-      # then
-      #   echo "属于 release pr 的 comment"
-      #   [[ $result =~ '"ref": "(release/.+)",' ]]
-      # else
-      #   echo "不属于 release pr 的 comment"
-      # fi
-      # echo $match[1]
-      # echo "::set-output name=branch::$match[1]"
+          result=$(curl ${{github.event.issue.pull_request.url}} -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}")
+          ref='"ref": "release/'
+          if [[ $result =~ $ref ]]
+          then
+            echo "属于 release pr 的 comment"
+            
+          else
+            echo "不属于 release pr 的 comment" && exit 1
+          fi
+          [[ $result =~ '"ref": "(release/.+)",' ]]
+          echo ${BASH_REMATCH[1]} ${BASH_REMATCH[2]}
+          echo $BASH_REMATCH[1]
+        # echo "::set-output name=branch::$match[1]"
       - run: echo ${{ steps.comment.outputs.branch }}
       - uses: actions/checkout@v3
         with:
