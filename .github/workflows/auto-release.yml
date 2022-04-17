@@ -44,10 +44,10 @@ jobs:
           if [[ $result =~ $ref ]]
           then
             echo "属于 release pr 的 comment" 
+            [[ $result =~ '"ref": "(release/.+)",' ]]
           else
             echo "不属于 release pr 的 comment"
           fi
-          [[ $result =~ '"ref": "(release/.+)",' ]]
       # echo $match[1]
       # echo "::set-output name=branch::$match[1]"
       - run: echo ${{ steps.comment.outputs.branch }}
