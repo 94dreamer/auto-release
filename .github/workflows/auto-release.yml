@@ -40,15 +40,15 @@ jobs:
         shell: bash
         run: |
           result=$(curl ${{github.event.issue.pull_request.url}} -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}")
-          ref='"ref": "release/'
-          if [[ $result =~ $ref ]]
+          headref='"ref": "release/'
+          headrefreg='"ref": "(release/.+)",'
+          if [[ $result =~ $headref ]]
           then
-            echo "属于 release pr 的 comment"
-            
+            echo "属于 release pr 的 comment" && [[ $result =~ headrefreg ]]
           else
             echo "不属于 release pr 的 comment"
           fi
-        # [[ $result =~ '"ref": "(release/.+)",' ]]
+        # [[ $result =~  ]]
         # echo ${BASH_REMATCH[1]} ${BASH_REMATCH[2]}
         # echo $BASH_REMATCH[1]
         # echo "::set-output name=branch::$match[1]"
