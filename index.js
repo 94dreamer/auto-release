@@ -6,8 +6,13 @@ const Renderer = require('./renderer');
 const fs = require('fs');
 const pkg = require(`./package.json`);
 const context = github.context;
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN
 
-console.log(pkg);
+console.log('context.github', context)
+
+// console.log('payload', context.payload);
+
+console.log('pkg?.version', pkg?.version);
 
 if (!GITHUB_TOKEN) {
     throw new Error(
@@ -22,14 +27,13 @@ const octokit = new Octokit({ auth: GITHUB_TOKEN });
 # 2. 提取 pr list 的所有 body 的 更新日志
 # 3. 根据分类格式化 的 logs 输出到模版
 # 4. 输出评论到 pr 的 comment
-# 5. 检测到 评论的 done，提交 changlog 添加到 changlog.md。
+# 5. 检测到 评论的 done，提交 changelog 添加到 changelog.md。
 # 6. 确任 md 更改，合并。
 
 # 7. 监听 release 分支的合并，进行 git tag 对应version
 # 8. git tag push 监听，发包
-# 9. 监听发完包，release 这次的 changlog（从 md 或者 pr 文件取）
+# 9. 监听发完包，release 这次的 changelog（从 md 或者 pr 文件取）
 # 10. 同步到微信群。（mk 内网不能同步）
- */
 // 现有的开源工具都是根据 commit 的message 去pr查找。。。显得有点蠢
 
 // 比较两个commit的提交
@@ -45,18 +49,17 @@ const octokit = new Octokit({ auth: GITHUB_TOKEN });
 
 // 行不通：调用 github 的 自动生成接口 这里可能存在鉴权问题，因为不是 直接的 api 接口
 // https://github.com/94dreamer/tdesign-vue-next/releases/notes?commitish=0.11.2&tag_name=0.11.2&previous_tag_name=
+ */
 
 async function generatorLogStart() {
     const version = pkg.version;
-    console.log('...context.repo', ...context.repo)
-    if (!context.repo.owner || !context.repo.repo) {
-        throw new Error(
-            "context.repo 应该有 owner和repo"
-        )
-    }
+
+    const [owner, repo] = context.payload.repository.full_name.split('/');
+
+    console.log('owner, repo', owner, repo)
 
     const releases = await octokit.rest.repos.generateReleaseNotes({
-        ...context.repo,
+        owner, repo,
         tag_name: version,// 'package.version'
         target_commitish: 'develop', // 也可以从上下文中拿
     });
@@ -64,7 +67,7 @@ async function generatorLogStart() {
     const PRNumbers = Renderer.getPRformtNotes(releases.data.body);
 
     const PRListRes = await Promise.all(PRNumbers.map(pull_number => octokit.rest.pulls.get({
-        ...context.repo,
+        owner, repo,
         pull_number,
     })));
 
