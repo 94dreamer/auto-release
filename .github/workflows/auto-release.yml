@@ -39,15 +39,16 @@ jobs:
       - id: comment
         shell: zsh
         run: |
-          result=$(curl ${{github.event.issue.pull_request.url}} -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}")
-          ref='"ref": "release/'
-          if [[ $result =~ $ref ]]
-          then
-            echo "属于 release pr 的 comment" 
-            [[ $result =~ '"ref": "(release/.+)",' ]]
-          else
-            echo "不属于 release pr 的 comment"
-          fi
+          echo '12313131'
+      # result=$(curl ${{github.event.issue.pull_request.url}} -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}")
+      # ref='"ref": "release/'
+      # if [[ $result =~ $ref ]]
+      # then
+      #   echo "属于 release pr 的 comment"
+      #   [[ $result =~ '"ref": "(release/.+)",' ]]
+      # else
+      #   echo "不属于 release pr 的 comment"
+      # fi
       # echo $match[1]
       # echo "::set-output name=branch::$match[1]"
       - run: echo ${{ steps.comment.outputs.branch }}
