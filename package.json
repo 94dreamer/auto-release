@@ -1,6 +1,6 @@
 {
   "name": "auto-release",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "自动生成 pr 日志",
   "main": "index.js",
   "scripts": {
