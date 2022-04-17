@@ -56,15 +56,12 @@ jobs:
 
           if [[ $result =~ $ref ]]
           then
-            echo "属于 release pr 的 comment"
+            echo "属于 release pr 的 comment" 
           else
             echo "不属于 release pr 的 comment"
           fi
 
           reMatch $result '"ref": "(release/.+)",'
-          echo $reMatch
-          echo ${reMatch}
-          echo ${reMatch[2]}
           echo "::set-output name=branch::release"
       - run: echo ${{ steps.comment.outputs.branch }}
       - uses: actions/checkout@v3
