@@ -41,16 +41,16 @@ jobs:
         run: |
           result=$(curl ${{github.event.issue.pull_request.url}} -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}")
           headref='"ref": "release/'
-          headrefreg='"ref": "(release/.+)",'
+          headrefreg='"ref": "(release/[[:digit:]]{1,2}\.[[:digit:]]{1,2}\.[[:digit:]]{1,2})",'
           if [[ $result =~ $headrefreg ]]
           then
-            echo "属于 release pr 的 comment ${BASH_REMATCH[2]}" 
+            echo "属于 release pr 的 comment ${BASH_REMATCH[1]}" 
           else
             echo "不属于 release pr 的 comment"
           fi
         # if [[ $result =~ $headref ]]
         # [[ $result =~  ]]
-        # echo ${BASH_REMATCH[1]} ${BASH_REMATCH[2]}
+        # echo ${BASH_REMATCH[1]} ${BASH_REMATCH[1]}
         # echo $BASH_REMATCH[1]
         # echo "::set-output name=branch::$match[1]"
       - run: echo ${{ steps.comment.outputs.branch }}
