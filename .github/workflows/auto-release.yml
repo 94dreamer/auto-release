@@ -37,6 +37,7 @@ jobs:
       && github.event.comment.user.login == github.event.issue.user.login
     steps:
       - id: comment
+        shell: zsh
         run: |
           function reMatch {
             typeset ec
@@ -50,16 +51,16 @@ jobs:
             fi
             return $ec
           }
-
           result=$(curl ${{github.event.issue.pull_request.url}} -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}")
           ref='"ref": "release/'
-
           if [[ $result =~ $ref ]]
           then
             echo "属于 release pr 的 comment" 
           else
             echo "不属于 release pr 的 comment"
           fi
+          [[ $result =~ '"ref": "(release/.+)",' ]]
+          echo "::set-output name=branch::$match[1]"
       - run: echo ${{ steps.comment.outputs.branch }}
       - uses: actions/checkout@v3
         with:
