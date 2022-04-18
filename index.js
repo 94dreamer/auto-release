@@ -4,15 +4,12 @@ const dayjs = require('dayjs');
 const { Octokit } = require("@octokit/rest");
 const Renderer = require('./renderer');
 const fs = require('fs');
-const pkg = require(`./package.json`);
 const context = github.context;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN
 
-console.log('context.github', context)
+console.log('context.github', context);
 
 // console.log('payload', context.payload);
-
-console.log('pkg?.version', pkg?.version);
 
 if (!GITHUB_TOKEN) {
     throw new Error(
@@ -52,6 +49,7 @@ const octokit = new Octokit({ auth: GITHUB_TOKEN });
  */
 
 async function generatorLogStart() {
+    const pkg = JSON.parse(fs.readFileSync('./package.json', 'utf-8'))
     const version = pkg.version;
 
     const [owner, repo] = context.payload.repository.full_name.split('/');
